@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<!-- saved from url=(0101)file:///C:/Users/Hussaini%20Laptops/Downloads/Rent%20&%20Drive%20Newcastle%20Invoice%20Generator.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rent &amp; Drive Newcastle Invoice Generator</title>
+<style>
+:root{--navy:#14213d;--blue:#2563eb;--light:#f4f6fa;--border:#d9dee8;--text:#1f2937}
+*{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--light);color:var(--text)}
+header{background:var(--navy);color:#fff;padding:22px 28px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+header h1{margin:0;font-size:24px} header p{margin:6px 0 0;opacity:.8;font-size:13px}
+.container{max-width:1250px;margin:24px auto;padding:0 18px;display:grid;grid-template-columns:380px 1fr;gap:22px}
+.panel,.invoice{background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 5px 18px #14213d0d}
+.panel{padding:20px}.panel h2{font-size:18px;margin:0 0 18px;color:var(--navy)}
+.section{border-top:1px solid var(--border);padding-top:16px;margin-top:18px}
+label{display:block;font-size:12px;font-weight:bold;margin:12px 0 5px;color:#4b5563}
+input,textarea,select{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;font:inherit;font-size:13px;background:#fff}
+textarea{resize:vertical;min-height:65px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+button{border:0;border-radius:9px;padding:12px 15px;font-weight:bold;cursor:pointer;font-size:13px}
+.primary{background:var(--blue);color:#fff}.secondary{background:#e8edf5;color:var(--navy)}.danger{background:#fee2e2;color:#991b1b}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.invoice{padding:38px;min-width:0}
+.inv-top{display:flex;justify-content:space-between;gap:20px;border-bottom:3px solid var(--navy);padding-bottom:22px}
+.brand h2{margin:0;color:var(--navy);font-size:25px}.brand p{margin:5px 0;font-size:12px;line-height:1.5}
+.inv-title{text-align:right}.inv-title h1{margin:0;font-size:35px;color:var(--navy);letter-spacing:1px}.inv-title p{margin:7px 0;font-size:12px}
+.details{display:grid;grid-template-columns:1fr 1fr;gap:25px;margin:24px 0}.details h4{margin:0 0 8px;font-size:12px;color:#64748b;text-transform:uppercase}.details p{margin:3px 0;font-size:13px;white-space:pre-line}
+table{width:100%;border-collapse:collapse;margin-top:20px;font-size:13px}th{background:#eef2f7;color:var(--navy);text-align:left;padding:12px}td{padding:12px;border-bottom:1px solid var(--border)}th:last-child,td:last-child{text-align:right}
+.totals{margin:22px 0 0 auto;width:280px;font-size:13px}.totals div{display:flex;justify-content:space-between;padding:6px 0}.totals .grand{font-size:18px;font-weight:bold;color:var(--navy);border-top:2px solid var(--navy);margin-top:7px;padding-top:12px}
+.notes{border-top:1px solid var(--border);margin-top:25px;padding-top:15px;font-size:12px;line-height:1.6}.footer{margin-top:28px;text-align:center;font-size:11px;color:#64748b}
+.small{font-size:11px;color:#64748b;margin-top:6px}
+@media(max-width:900px){.container{grid-template-columns:1fr}.invoice{padding:22px}}
+@media print{body{background:#fff}.panel,header{display:none}.container{display:block;margin:0;padding:0}.invoice{border:0;box-shadow:none;border-radius:0;padding:0}.invoice{page-break-inside:avoid}.no-print{display:none!important}}
+
+.rent-row{display:grid;grid-template-columns:1.1fr .8fr 1fr 1.2fr auto;gap:7px;margin:8px 0;align-items:center}
+.rent-row input,.rent-row select{min-width:0;padding:8px;font-size:12px}
+.rent-history{width:100%;border-collapse:collapse;font-size:12px;margin-top:12px}
+.rent-history th,.rent-history td{padding:8px;border-bottom:1px solid var(--border);text-align:left}
+.rent-history th:last-child,.rent-history td:last-child{text-align:right}
+.rent-summary{background:#f1f5f9;border-radius:8px;padding:10px;margin-top:12px;font-size:13px}
+@media(max-width:600px){.rent-row{grid-template-columns:1fr 1fr}.rent-row button{grid-column:span 2}}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;padding:12px 18px;border-radius:9px;font-size:13px;box-shadow:0 8px 22px #0004;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:50;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.error{background:#991b1b}
+.banner{display:none;background:#eaf1ff;border:1px solid #bcd3ff;color:var(--navy);border-radius:9px;padding:10px 12px;font-size:12px;margin:10px 0;line-height:1.5}
+.banner button{padding:5px 10px;font-size:11px;margin-top:6px}
+</style>
+</head>
+<body>
+<header>
+  <div><h1>Rent &amp; Drive Newcastle Invoice Generator</h1><p>Rent &amp; Drive Newcastle Pty Ltd</p></div>
+  <button class="secondary" onclick="window.print()">Print / Save PDF</button>
+</header>
+<div class="container">
+<section class="panel">
+<h2>Invoice Entries</h2>
+<label>Invoice Number</label><input id="invoiceNo" value="INV-001">
+<div class="grid2">
+<div><label>Invoice Date</label><input id="invoiceDate" type="text" inputmode="numeric" placeholder="dd/mm/yyyy" maxlength="10"></div>
+<div><label>Due Date</label><input id="dueDate" type="text" inputmode="numeric" placeholder="dd/mm/yyyy" maxlength="10"></div>
+</div>
+<div class="section"><h2>Customer Details</h2>
+<div class="banner" id="storageWarning" style="border-color:#f4b8b8;background:#fdeeee;color:#991b1b"></div>
+<label>Load a Saved Customer (optional)</label>
+<div style="display:flex;gap:8px;align-items:stretch">
+<select id="customerPicker" onchange="loadCustomerFromPicker()" style="flex:1"><option value="">— Select an existing customer —</option><option value="cyvbc6o42r9o1790362725060">teesh (1 invoice)</option></select>
+<button type="button" class="secondary" style="white-space:nowrap" onclick="newCustomer()">+ New Customer</button>
+</div>
+<label>Customer Name</label><input id="customer" list="customerList" placeholder="Customer full name" autocomplete="off">
+<datalist id="customerList"><option value="teesh"></option></datalist>
+<div class="banner" id="customerBanner"></div>
+<label>Phone Number</label><input id="phone" placeholder="04...">
+<label>Email</label><input id="email" placeholder="customer@email.com">
+<label>Customer Address</label><textarea id="address" placeholder="Full address"></textarea>
+</div>
+<div class="section"><h2>Vehicle / Item</h2>
+<div class="banner" id="prevInvoicesBanner">
+<b>Previous invoices for this customer</b>
+<table class="rent-history"><thead><tr><th>Date</th><th>Vehicle</th><th>Weeks</th><th>Total</th></tr></thead>
+<tbody id="prevInvoicesRows"></tbody></table>
+</div>
+<label>Vehicle or Item Description</label><input id="item" placeholder="e.g. 2015 Toyota RAV4">
+<div class="grid2">
+<div><label>Vehicle Registration</label><input id="rego" placeholder="GDY79S"></div>
+<div><label>Vehicle Pick Up Date</label><input id="pickupDate" type="text" inputmode="numeric" placeholder="dd/mm/yyyy" maxlength="10"></div>
+</div>
+<div class="grid2">
+<div><label>Vehicle Return Date</label><input id="returnDate" type="text" inputmode="numeric" placeholder="dd/mm/yyyy" maxlength="10"></div>
+<div><label>Weekly Rent ($)</label><input id="price" type="number" min="0" step="0.01" value="0"></div>
+</div>
+<div class="grid2">
+<div><label>Weeks</label><input id="qty" type="number" min="0" step="1" value="0"></div>
+<div><label>Discount ($)</label><input id="discount" type="number" min="0" step="0.01" value="0"></div>
+</div>
+<label>GST / Tax Rate (%)</label><input id="tax" type="number" min="0" step="0.01" value="0">
+<label>Payment Status</label><select id="status"><option>Unpaid</option><option>Paid</option><option>Partially Paid</option></select>
+<label>Amount Paid ($)</label><input id="paid" type="number" min="0" step="0.01" value="0">
+<label>Bond / Security Deposit ($)</label>
+<div class="rent-row"><input id="bondReceived" type="number" min="0" step="0.01" value="0" placeholder="Amount"><select id="bondMethod"><option>Bank Transfer</option><option>Cash</option></select></div>
+<label>Bond Balance ($)</label><input id="bondBalanceInput" type="number" min="0" step="0.01" value="0">
+</div>
+
+<div class="section"><h2>Invoice Rent Display (Optional)</h2>
+<label for="invoiceRentPaidOverride">Total Rent Paid to Display ($) — optional</label>
+<input id="invoiceRentPaidOverride" type="number" min="0" step="0.01" placeholder="Leave blank to use recorded rent payments">
+<p class="small">Invoice-only amount. This does not change saved rent payment history or the invoice Amount Paid / Balance Due calculations.</p>
+<label for="rentHistoryDisplay">Printed Rental History</label>
+<select id="rentHistoryDisplay">
+<option value="detailed">Option A — Detailed rent payment history</option>
+<option value="summary">Option B — Total rental weeks only</option>
+<option value="hidden">Hide rental history section</option>
+</select>
+<label style="display:flex;align-items:center;gap:8px;font-weight:normal"><input id="showTotalRentPaid" type="checkbox" checked style="width:auto"> Show Total Rent Paid on printed invoice</label>
+<p class="small">These settings affect this invoice display only; they do not edit saved rental records.</p>
+</div>
+<div class="section"><h2>Rent Payment History</h2>
+<label>Payment Entry</label>
+<div class="rent-row">
+<input id="rentDate" type="date" aria-label="Payment date">
+<input id="rentAmount" type="number" min="0" step="0.01" placeholder="Amount">
+<select id="rentMethod"><option>Bank Transfer</option><option>Cash</option></select>
+<input id="rentNote" placeholder="Note">
+<button class="secondary" onclick="addRentPayment()">Add</button>
+</div>
+<table class="rent-history"><thead><tr><th>Date</th><th>Amount</th><th>Method</th><th>Note</th><th></th></tr></thead>
+<tbody id="rentRows"></tbody></table>
+<div class="rent-summary">
+<div><b>Total Rent Expected:</b> <span id="expectedRent">$0.00</span></div>
+<div><b>Total Rent Paid:</b> <span id="totalRentPaid">$0.00</span></div>
+<div><b>Rent Outstanding:</b> <span id="rentOutstanding">$0.00</span></div>
+<div><b>Bond Balance:</b> <span id="bondBalance">$0.00</span></div>
+</div>
+</div>
+<div class="section"><h2>Notes</h2><textarea id="notes" placeholder="Thank you for your business."></textarea></div>
+<div class="actions"><button class="primary" onclick="updateInvoice()">Update Invoice</button><button class="secondary" onclick="saveInvoice()">Save Data</button><button class="danger" onclick="clearForm()">Clear</button></div>
+<p class="small">Your entries are saved in this browser only when you click Save Data.</p>
+</section>
+
+<section class="invoice" id="invoice">
+<div class="inv-top">
+<div class="brand"><h2>Rent &amp; Drive Newcastle</h2><p><b>Rent &amp; Drive Newcastle Pty Ltd</b><br><b>ABN: 26684261185</b><br>30 Munibung Road, Cardiff NSW 2285, Australia<br>Website: rentdrivenewcastle.com.au<br>Email: Rentdrivenewcastle@gmail.com<br>Customer Support: +61432138221</p></div>
+<div class="inv-title"><h1>INVOICE</h1><p><b>No:</b> <span id="vInvoiceNo">INV-001</span></p><p><b>Date:</b> <span id="vInvoiceDate">26/09/2026</span></p><p><b>Due:</b> <span id="vDueDate"></span></p></div>
+</div>
+<div class="details">
+<div><h4>Bill To</h4><p id="vCustomer"></p><p id="vPhone"></p><p id="vEmail"></p><p id="vAddress"></p></div>
+<div><h4>Vehicle / Reference</h4><p><b>Description:</b> <span id="vItem"></span></p><p><b>Vehicle Registration:</b> <span id="vRego"></span></p><p><b>Vehicle Pick Up Date:</b> <span id="vPickupDate"></span></p><p><b>Vehicle Return Date:</b> <span id="vReturnDate"></span></p><p><b>Status:</b> <span id="vStatus">Unpaid</span></p></div>
+</div>
+<table><thead><tr><th>Description</th><th>Weeks</th><th>Weekly Rent</th><th>Total</th></tr></thead>
+<tbody><tr><td id="vDesc"></td><td id="vQty">0</td><td id="vPrice">$0.00</td><td id="vLine">$0.00</td></tr></tbody></table>
+<div class="totals"><div><span>Subtotal</span><span id="vSubtotal">$0.00</span></div><div><span>Discount</span><span id="vDiscount">-$0.00</span></div><div><span>Tax / GST</span><span id="vTax">$0.00</span></div><div class="grand"><span>Total</span><span id="vTotal">$0.00</span></div><div><span>Amount Paid</span><span id="vPaid">$0.00</span></div><div><span>Bond / Security Deposit (<span id="vBondMethod">Bank Transfer</span>)</span><span id="vBond">$0.00</span></div><div><span>Balance Due</span><span id="vBalance">$0.00</span></div></div>
+
+<div class="notes no-print" id="vPrevInvoicesSection" style="display:none">
+<b>Previous Invoices / Vehicles for This Customer</b>
+<table class="rent-history"><thead><tr><th>Date</th><th>Vehicle</th><th>Weeks</th><th>Total</th></tr></thead>
+<tbody id="vPrevInvoicesRows"></tbody></table>
+</div>
+<div class="notes" id="vRentHistorySection"><b id="vRentHistoryHeading">Rent Payment History</b>
+<div id="vRentSummary" style="display:none;margin-top:8px"><b>Total Rental Weeks:</b> <span id="vRentWeeks">0</span></div>
+<div id="vRentDetail">
+<table class="rent-history"><thead><tr><th>Date</th><th>Amount</th><th>Method</th><th>Note</th></tr></thead>
+<tbody id="vRentRows"></tbody></table>
+<div><b>Total Rental Weeks:</b> <span id="vRentWeeksDetail">0</span></div>
+</div>
+<div id="vRentPaidLine" style="margin-top:8px"><b>Total Rent Paid:</b> <span id="vTotalRentPaid">$0.00</span> &nbsp; <b>Rent Outstanding:</b> <span id="vRentOutstanding">$0.00</span> &nbsp; <b>Bond Balance:</b> <span id="vBondBalance">$0.00</span></div>
+</div>
+<div class="notes"><b>Notes:</b><br><span id="vNotes"></span></div>
+<div class="footer">Thank you for your business • This invoice was generated electronically.</div>
+</section>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const $=id=>document.getElementById(id);
+const money=n=>'$'+Number(n||0).toLocaleString('en-AU',{minimumFractionDigits:2,maximumFractionDigits:2});
+const val=id=>$(id).value;
+function dateFmt(s){if(!s)return ''; if(/^\d{4}-\d{2}-\d{2}$/.test(s)){const [y,m,d]=s.split('-');return `${d}/${m}/${y}`;} return s;}
+
+let rentPayments = [];
+let lastLoadedRecordId = null; // which saved record (if any) is currently loaded into the form
+let preLoadSnapshot = null;    // form state right before an auto-load, so "Undo" can restore it
+
+// ---- Toast (replaces alert(); alert()/confirm() are unreliable inside a sandboxed artifact frame) ----
+let toastTimer=null;
+function showToast(msg, type){
+  const t=$('toast');
+  t.textContent=msg; t.className='toast show'+(type==='error'?' error':'');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>{t.className='toast';},4000);
+}
+
+// ---- Customer DB: one record per person, looked up by phone number (preferred,
+// since names get mistyped/duplicated) OR by name (fallback for entries with no phone) ----
+const CUSTOMER_DB_KEY = 'rentDriveCustomerDBv2';
+function normPhone(p){return (p||'').replace(/\D/g,'');}      // digits only
+function normName(n){return (n||'').trim().toLowerCase().replace(/\s+/g,' ');}
+function emptyDB(){return {records:{}, phoneIndex:{}, nameIndex:{}};}
+function loadCustomerDB(){
+  try{
+    const raw = JSON.parse(localStorage.getItem(CUSTOMER_DB_KEY)||'null');
+    if(raw && raw.records) return normalizeDB(raw);
+  }catch(e){}
+  return migrateOldDB() || emptyDB();
+}
+function normalizeDB(db){
+  // upgrades records saved by an earlier version of this tool (single item/rego/price
+  // fields) into the invoices-array shape, so nothing already saved gets lost
+  let changed=false;
+  Object.values(db.records).forEach(rec=>{
+    if(!rec.invoices){
+      rec.invoices = rec.item ? [{invoiceNo:'', date:(rec.lastUpdated||'').slice(0,10), item:rec.item, rego:rec.rego, qty:'', price:rec.price, total:'', status:''}] : [];
+      delete rec.item; delete rec.rego; delete rec.price;
+      changed=true;
+    }
+  });
+  if(changed) saveCustomerDB(db);
+  return db;
+}
+function migrateOldDB(){
+  // one-time migration from the earlier name-only, single-vehicle store, so existing
+  // saved customers and their one prior vehicle aren't lost — converted into the invoices list
+  try{
+    const old = JSON.parse(localStorage.getItem('rentDriveCustomerDB')||'null');
+    if(!old) return null;
+    const db = emptyDB();
+    Object.values(old).forEach(rec=>{
+      const id = 'c'+Math.random().toString(36).slice(2)+Date.now()+Math.random();
+      db.records[id]={
+        customer:rec.customer, phone:rec.phone, email:rec.email, address:rec.address,
+        weeklyRent:rec.weeklyRent, expectedWeeks:rec.expectedWeeks, rentPayments:rec.rentPayments||[],
+        invoices: rec.item ? [{invoiceNo:'', date:(rec.lastUpdated||'').slice(0,10), item:rec.item, rego:rec.rego, qty:'', price:rec.price, total:'', status:''}] : [],
+        lastUpdated: rec.lastUpdated
+      };
+      if(rec.phone && normPhone(rec.phone).length>=6) db.phoneIndex[normPhone(rec.phone)]=id;
+      if(rec.customer) db.nameIndex[normName(rec.customer)]=id;
+    });
+    saveCustomerDB(db);
+    return db;
+  }catch(e){return null;}
+}
+function saveCustomerDB(db){try{localStorage.setItem(CUSTOMER_DB_KEY, JSON.stringify(db));}catch(e){}}
+function refreshCustomerList(){
+  const db=loadCustomerDB();
+  const opts = Object.entries(db.records).sort((a,b)=>(b[1].lastUpdated||'').localeCompare(a[1].lastUpdated||''));
+  $('customerList').innerHTML = opts.map(([id,c])=>`<option value="${(c.customer||'').replace(/"/g,'&quot;')}">`).join('');
+  $('customerPicker').innerHTML = '<option value="">— Select an existing customer —</option>' +
+    opts.map(([id,c])=>`<option value="${id}">${(c.customer||'(no name)')}${c.phone?' — '+c.phone:''} (${(c.invoices||[]).length} invoice${(c.invoices||[]).length===1?'':'s'})</option>`).join('');
+}
+function currentInvoiceSnapshot(){
+  const qty=Number(val('qty'))||0, price=Number(val('price'))||0, discount=Number(val('discount'))||0, tax=Number(val('tax'))||0, paid=Number(val('paid'))||0;
+  const bondReceived=Number(val('bondReceived'))||0, bondMethod=val('bondMethod')||'Bank Transfer', bondBalance=Number(val('bondBalanceInput'))||0;
+  const subtotal=qty*price, taxable=Math.max(0,subtotal-discount), taxAmt=taxable*tax/100, total=taxable+taxAmt;
+  const rt=rentTotals();
+  return {
+    invoiceNo:val('invoiceNo'), date:val('invoiceDate'), dueDate:val('dueDate'), customer:val('customer'), phone:val('phone'), email:val('email'), address:val('address'),
+    item:val('item'), rego:val('rego'), pickupDate:val('pickupDate'), returnDate:val('returnDate'), qty, price, discount, tax, paid, total, status:val('status'),
+    bondReceived, bondMethod, bondBalance, notes:val('notes'), rentPayments:JSON.parse(JSON.stringify(rentPayments)), rentExpected:rt.expected, rentPaid:rt.paid, rentOutstanding:rt.outstanding
+  };
+}
+function renderPrevInvoices(list){
+  const rows=(list||[]).map(inv=>`<tr><td>${inv.date||''}</td><td>${(inv.item||'')+(inv.rego?' • '+inv.rego:'')}</td><td>${inv.qty||''}</td><td>${money(inv.total)}</td></tr>`).join('');
+  $('prevInvoicesRows').innerHTML = rows;
+  $('vPrevInvoicesRows').innerHTML = rows;
+  const has = list && list.length>0;
+  $('prevInvoicesBanner').style.display = has ? 'block' : 'none';
+  $('vPrevInvoicesSection').style.display = has ? 'block' : 'none';
+}
+function snapshotForm(){
+  return {phone:val('phone'),email:val('email'),address:val('address'),item:val('item'),rego:val('rego'),pickupDate:val('pickupDate'),returnDate:val('returnDate'),
+    price:val('price'),qty:val('qty'),
+    rentPayments:JSON.parse(JSON.stringify(rentPayments))};
+}
+function restoreSnapshot(s){
+  $('phone').value=s.phone;$('email').value=s.email;$('address').value=s.address;$('item').value=s.item;
+  $('rego').value=s.rego;$('pickupDate').value=s.pickupDate||'';$('returnDate').value=s.returnDate||'';$('price').value=s.price||0;$('qty').value=s.qty||0;
+  rentPayments=s.rentPayments; renderRentPayments(); updateInvoice();
+}
+function hideCustomerBanner(){$('customerBanner').style.display='none';}
+// Looks up a saved record for the phone/name currently typed in the form.
+// Phone match wins (more reliable — names get mistyped or reused); falls back to name.
+function findMatchingRecord(db, phone, name){
+  const p = normPhone(phone);
+  if(p.length>=6 && db.phoneIndex[p]!==undefined){
+    const id=db.phoneIndex[p]; return {id, rec:db.records[id]};
+  }
+  const n = normName(name);
+  if(n && db.nameIndex[n]!==undefined){
+    const id=db.nameIndex[n]; return {id, rec:db.records[id]};
+  }
+  return null;
+}
+function applyCustomerRecord(id, rec, {skipUndo}={}){
+  if(!skipUndo) preLoadSnapshot = snapshotForm();
+  $('customer').value = rec.customer||val('customer');
+  $('phone').value = rec.phone||''; $('email').value = rec.email||''; $('address').value = rec.address||'';
+  const inv=(rec.invoices||[]).slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''))[0];
+  if(inv){
+    const fields=['invoiceNo','invoiceDate','dueDate','item','rego','pickupDate','returnDate','qty','price','discount','tax','paid','status','bondBalanceInput','notes'];
+    fields.forEach(k=>{ if($(k) && inv[k]!==undefined) $(k).value=inv[k]; });
+    if($('bondReceived')) $('bondReceived').value = inv.bondReceived!==undefined ? inv.bondReceived : ((Number(inv.bondBank)||0)+(Number(inv.bondCash)||0));
+    if($('bondMethod')) $('bondMethod').value = inv.bondMethod || (Number(inv.bondCash)>0 && Number(inv.bondBank)===0 ? 'Cash' : 'Bank Transfer');
+    rentPayments = inv.rentPayments ? JSON.parse(JSON.stringify(inv.rentPayments)) : (rec.rentPayments ? JSON.parse(JSON.stringify(rec.rentPayments)) : []);
+  } else {
+    $('price').value = rec.price||0; $('qty').value = rec.qty||0;
+    rentPayments = rec.rentPayments ? JSON.parse(JSON.stringify(rec.rentPayments)) : [];
+  }
+  renderRentPayments(); updateInvoice();
+  renderPrevInvoices(rec.invoices||[]);
+  lastLoadedRecordId = id;
+  const when = rec.lastUpdated ? rec.lastUpdated.slice(0,10).split('-').reverse().join('/') : 'earlier';
+  const count = (rec.invoices||[]).length;
+  const banner = $('customerBanner');
+  banner.style.display='block';
+  banner.innerHTML = `Existing customer — <b>${rec.customer}</b>, ${count} previous invoice${count===1?'':'s'} on file (last updated ${when}). Contact details and rent history loaded; their past vehicles are listed below.<br>Not the same person? <button class="secondary" onclick="undoCustomerLoad()">Undo, start fresh</button>`;
+  showToast(`Loaded previous record for ${rec.customer}`);
+}
+// Called whenever the customer name OR phone field changes. If a saved record
+// matches, it loads their contact details + rent payment history automatically
+// (no popup — popups can be blocked inside the artifact frame), and shows every
+// PAST invoice/vehicle for that customer in a read-only history table — it does
+// NOT overwrite the vehicle fields below, since this is a fresh invoice/vehicle
+// entry that will be added to that history, not replace it.
+function tryLoadCustomer(){
+  const db = loadCustomerDB();
+  const match = findMatchingRecord(db, val('phone'), val('customer'));
+  if(!match){
+    if(lastLoadedRecordId!==null){lastLoadedRecordId=null;}
+    hideCustomerBanner();
+    renderPrevInvoices([]);
+    return;
+  }
+  if(match.id===lastLoadedRecordId) return; // already loaded, don't reload over edits
+  applyCustomerRecord(match.id, match.rec);
+}
+// Explicit picker: bypasses name/phone text matching entirely — pick the
+// customer straight from the dropdown of everyone saved in this browser.
+function loadCustomerFromPicker(){
+  const id = val('customerPicker');
+  if(!id) return;
+  const db = loadCustomerDB();
+  const rec = db.records[id];
+  if(!rec){showToast('Could not find that saved customer.','error');return;}
+  applyCustomerRecord(id, rec);
+  $('customerPicker').value='';
+}
+// Explicit "start a new customer" action: clears all customer-related fields
+// (name, contact, address, rent plan, payment history, previous-invoice view)
+// so a brand new person can be entered from scratch. Leaves invoice number/date
+// and the vehicle/item fields alone, since those relate to this invoice, not the customer.
+function newCustomer(){
+  lastLoadedRecordId = null; preLoadSnapshot = null;
+  hideCustomerBanner();
+  renderPrevInvoices([]);
+  $('customer').value=''; $('phone').value=''; $('email').value=''; $('address').value='';
+  $('price').value=0; $('qty').value=0;
+  rentPayments=[];
+  renderRentPayments(); updateInvoice();
+  $('customerPicker').value='';
+  $('customer').focus();
+  showToast('Ready for a new customer — enter their details below.');
+}
+function undoCustomerLoad(){
+  if(preLoadSnapshot) restoreSnapshot(preLoadSnapshot);
+  lastLoadedRecordId = null; preLoadSnapshot = null;
+  hideCustomerBanner();
+  renderPrevInvoices([]);
+  showToast('Reverted — this will be saved as a new customer.');
+}
+function upsertCustomer(){
+  const name = val('customer').trim();
+  const phone = val('phone').trim();
+  if(!name && !phone) return;
+  const db = loadCustomerDB();
+  const match = findMatchingRecord(db, phone, name);
+  const id = match ? match.id : ('c'+Math.random().toString(36).slice(2)+Date.now());
+  const oldPhoneKey = match && normPhone(match.rec.phone);
+  const oldNameKey = match && normName(match.rec.customer);
+  // keep every past invoice for this customer — only add/update the current one, never overwrite the list
+  const invoices = (match && match.rec.invoices) ? match.rec.invoices.slice() : [];
+  const snap = currentInvoiceSnapshot();
+  const existingIdx = invoices.findIndex(inv=>inv.invoiceNo && inv.invoiceNo===snap.invoiceNo);
+  if(existingIdx>=0) invoices[existingIdx]=snap; else invoices.push(snap);
+  db.records[id] = {
+    customer:name, phone, email:val('email'), address:val('address'),
+    price:val('price'), qty:val('qty'), rentPayments: JSON.parse(JSON.stringify(rentPayments)),
+    invoices, lastUpdated: new Date().toISOString()
+  };
+  // keep indexes in sync (covers a corrected phone number or name for an existing record)
+  if(oldPhoneKey && db.phoneIndex[oldPhoneKey]===id) delete db.phoneIndex[oldPhoneKey];
+  if(oldNameKey && db.nameIndex[oldNameKey]===id) delete db.nameIndex[oldNameKey];
+  const p = normPhone(phone); if(p.length>=6) db.phoneIndex[p]=id;
+  const n = normName(name); if(n) db.nameIndex[n]=id;
+  saveCustomerDB(db);
+  refreshCustomerList();
+  lastLoadedRecordId = id;
+  renderPrevInvoices(invoices);
+}
+function addRentPayment(){
+  const date=val('rentDate'), amount=Number(val('rentAmount'))||0, method=val('rentMethod'), note=val('rentNote');
+  if(!date || amount<=0){showToast('Enter a valid payment date and amount.','error');return;}
+  rentPayments.push({date,amount,method,note});
+  rentPayments.sort((a,b)=>a.date.localeCompare(b.date));
+  $('rentAmount').value='';$('rentNote').value='';
+  renderRentPayments();updateInvoice();
+}
+function removeRentPayment(index){rentPayments.splice(index,1);renderRentPayments();updateInvoice();}
+function rentTotals(){
+  const weekly=Number(val('price'))||0;
+  const weeks=Number(val('qty'))||0;
+  const expected=weekly*weeks;
+  const paid=rentPayments.reduce((sum,p)=>sum+(Number(p.amount)||0),0);
+  return {expected,paid,outstanding:Math.max(0,expected-paid)};
+}
+
+function renderRentPayments(){
+  const rows=$('rentRows'), vrows=$('vRentRows');
+  rows.innerHTML='';vrows.innerHTML='';
+  rentPayments.forEach((p,i)=>{
+    rows.innerHTML += `<tr><td>${dateFmt(p.date)}</td><td>${money(p.amount)}</td><td>${p.method}</td><td>${p.note||''}</td><td><button class="danger" onclick="removeRentPayment(${i})">Remove</button></td></tr>`;
+    vrows.innerHTML += `<tr><td>${dateFmt(p.date)}</td><td>${money(p.amount)}</td><td>${p.method}</td><td>${p.note||''}</td></tr>`;
+  });
+  const t=rentTotals();
+  $('expectedRent').textContent=money(t.expected);$('totalRentPaid').textContent=money(t.paid);$('rentOutstanding').textContent=money(t.outstanding);$('bondBalance').textContent=money(Number(val('bondBalanceInput'))||0);
+  const overrideText=val('invoiceRentPaidOverride').trim();
+  const displayedRentPaid=overrideText!=='' && Number.isFinite(Number(overrideText)) && Number(overrideText)>=0 ? Number(overrideText) : t.paid;
+  $('vTotalRentPaid').textContent=money(displayedRentPaid);$('vRentOutstanding').textContent=money(t.outstanding);$('vBondBalance').textContent=money(Number(val('bondBalanceInput'))||0);
+}
+
+function updateInvoice(){
+ let qty=Number(val('qty'))||0, price=Number(val('price'))||0, discount=Number(val('discount'))||0, tax=Number(val('tax'))||0, paid=Number(val('paid'))||0;
+ let bond=Number(val('bondReceived'))||0, bondMethod=val('bondMethod')||'Bank Transfer';
+ let subtotal=qty*price, taxable=Math.max(0,subtotal-discount), taxAmt=taxable*tax/100, total=taxable+taxAmt, balance=Math.max(0,total-paid);
+ $('vInvoiceNo').textContent=val('invoiceNo');$('vInvoiceDate').textContent=dateFmt(val('invoiceDate'));$('vDueDate').textContent=dateFmt(val('dueDate'));
+ $('vCustomer').textContent=val('customer');$('vPhone').textContent=val('phone');$('vEmail').textContent=val('email');$('vAddress').textContent=val('address');
+ $('vItem').textContent=val('item');$('vRego').textContent=val('rego');$('vPickupDate').textContent=dateFmt(val('pickupDate'));$('vReturnDate').textContent=dateFmt(val('returnDate'));$('vStatus').textContent=val('status');
+ $('vDesc').textContent=val('rego');$('vQty').textContent=qty;$('vPrice').textContent=money(price);$('vLine').textContent=money(subtotal);
+ $('vSubtotal').textContent=money(subtotal);$('vDiscount').textContent='-'+money(discount);$('vTax').textContent=money(taxAmt);$('vTotal').textContent=money(total);$('vPaid').textContent=money(paid);$('vBond').textContent=money(bond);$('vBondMethod').textContent=bondMethod;$('vBalance').textContent=money(balance);$('vNotes').textContent=val('notes');
+ const bondBal=Number(val('bondBalanceInput'))||0; $('bondBalance').textContent=money(bondBal); $('vBondBalance').textContent=money(bondBal);
+ const displayMode=val('rentHistoryDisplay')||'detailed';
+ const showPaid=!!$('showTotalRentPaid').checked;
+ $('vRentHistorySection').style.display=displayMode==='hidden'?'none':'block';
+ $('vRentDetail').style.display=displayMode==='detailed'?'block':'none';
+ $('vRentSummary').style.display=displayMode==='summary'?'block':'none';
+ $('vRentPaidLine').style.display=showPaid?'block':'none';
+ $('vRentWeeks').textContent=String(qty); $('vRentWeeksDetail').textContent=String(qty);
+ $('vRentHistoryHeading').textContent=displayMode==='summary'?'Rental Summary':'Rent Payment History';
+ const overrideText=val('invoiceRentPaidOverride').trim();
+ const displayedRentPaid=overrideText!=='' && Number.isFinite(Number(overrideText)) && Number(overrideText)>=0 ? Number(overrideText) : rentTotals().paid;
+ $('vTotalRentPaid').textContent=money(displayedRentPaid);
+}
+function saveInvoice(){
+let data=Object.fromEntries([...document.querySelectorAll('input,textarea,select')].map(e=>[e.id,e.value]));
+data.rentPayments=rentPayments;
+localStorage.setItem('rentDriveNewcastleInvoiceDataV4',JSON.stringify(data));
+upsertCustomer();
+showToast('Saved — this customer\'s details and rent history are now stored for next time.');
+}
+function loadInvoice(){
+  let d=JSON.parse(localStorage.getItem('rentDriveNewcastleInvoiceDataV4')||'null');
+  if(d){
+    Object.entries(d).forEach(([k,v])=>{
+      if(k==='rentPayments') rentPayments=v||[];
+      else if($(k)) $(k).value=v;
+    });
+  }
+}
+let clearArmed=false, clearArmTimer=null;
+function clearForm(){
+  const btn=event && event.target;
+  if(!clearArmed){
+    clearArmed=true;
+    if(btn) btn.textContent='Click again to confirm';
+    showToast('Click Clear again to confirm — this cannot be undone.','error');
+    clearArmTimer=setTimeout(()=>{clearArmed=false;if(btn)btn.textContent='Clear';},3000);
+    return;
+  }
+  clearTimeout(clearArmTimer); clearArmed=false;
+  if(btn) btn.textContent='Clear';
+  rentPayments=[];lastLoadedRecordId=null;preLoadSnapshot=null;hideCustomerBanner();renderPrevInvoices([]);
+  document.querySelectorAll('input,textarea').forEach(e=>{if(e.id!=='invoiceNo')e.value=''});
+  $('qty').value=0;$('price').value=0;$('discount').value=0;$('tax').value=0;$('paid').value=0;$('bondReceived').value=0;$('bondMethod').value='Bank Transfer';$('bondBalanceInput').value=0;$('status').value='Unpaid';
+  renderRentPayments();updateInvoice();
+  showToast('Cleared.');
+}
+const today=new Date(); const todayStr=String(today.getDate()).padStart(2,'0')+'/'+String(today.getMonth()+1).padStart(2,'0')+'/'+today.getFullYear(); $('invoiceDate').value=todayStr; $('dueDate').value=''; $('rentDate').value=today.toISOString().slice(0,10); $('qty').value=0; $('price').value=0; $('bondReceived').value=0; $('bondMethod').value='Bank Transfer'; loadInvoice(); $('invoiceDate').value=todayStr; $('qty').value=0; if(!$('bondReceived').value)$('bondReceived').value=0; if(!$('bondMethod').value)$('bondMethod').value='Bank Transfer'; if(!$('bondBalanceInput').value)$('bondBalanceInput').value=0; updateInvoice();
+refreshCustomerList();
+(function checkStorage(){
+  try{
+    const k='__rdStorageTest__';
+    localStorage.setItem(k,'1');
+    const ok = localStorage.getItem(k)==='1';
+    localStorage.removeItem(k);
+    if(!ok) throw new Error('mismatch');
+  }catch(e){
+    const w=$('storageWarning');
+    w.style.display='block';
+    w.innerHTML = '⚠ This browser/window is blocking saved data (local storage) for this page. Customer history will NOT be remembered here. Try opening this artifact\'s link directly in a normal browser tab (not an embedded preview) and make sure cookies/site data aren\'t blocked for it.';
+  }
+})();
+let customerLookupTimer=null;
+function scheduleLookup(){
+  clearTimeout(customerLookupTimer);
+  customerLookupTimer=setTimeout(tryLoadCustomer,400);
+}
+$('customer').addEventListener('input', scheduleLookup);
+$('customer').addEventListener('blur', tryLoadCustomer);
+$('phone').addEventListener('input', scheduleLookup);
+$('phone').addEventListener('blur', tryLoadCustomer);
+document.querySelectorAll('input,textarea,select').forEach(e=>e.addEventListener('input',updateInvoice));
+$('bondBalanceInput').addEventListener('change',updateInvoice);
+['invoiceDate','dueDate','pickupDate','returnDate'].forEach(id=>$(id).addEventListener('input',e=>{
+  let v=e.target.value.replace(/\D/g,'').slice(0,8);
+  if(v.length>4) v=v.slice(0,2)+'/'+v.slice(2,4)+'/'+v.slice(4);
+  else if(v.length>2) v=v.slice(0,2)+'/'+v.slice(2);
+  e.target.value=v; updateInvoice();
+}));
+</script>
+
+
+</body></html>
